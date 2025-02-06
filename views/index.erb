@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cookie Clicker</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Cookie Clicker by Jacob Park</h1>
+
+  <div id="cookie-container">
+    <img id="cookie" src="/PerfectCookie.jpg" alt="Cookie">
+  </div>
+
+  <p>Cookies: <span id="cookie-count"><%= $cookies.to_i %></span></p>  <!-- Initial value -->
+
+  <h2>Upgrades</h2>
+
+  <div class="upgrade">
+    <h3>Cursor</h3>
+    <p>Cost: <span id="cursor-cost"><%= $cursor_cost %></span> cookies</p>  <!-- Initial value -->
+    <p>You have: <span id="cursor-count"><%= $cursors %></span></p>  <!-- Initial value -->
+    <p>CPS: <span id="cursor-cps"><%= $cursor_cps %></span></p>      <!-- Initial value -->
+    <form action="/buy_cursor" method="post">
+      <button type="submit">Buy Cursor</button>
+    </form>
+  </div>
+
+  <div class="upgrade">
+    <h3>Grandma</h3>
+    <p>Cost: <span id="grandma-cost"><%= $grandma_cost %></span> cookies</p>  <!-- Initial value -->
+    <p>You have: <span id="grandma-count"><%= $grandmas %></span></p>  <!-- Initial value -->
+    <p>CPS: <span id="grandma-cps"><%= $grandma_cps %></span></p>      <!-- Initial value -->
+    <form action="/buy_grandma" method="post">
+      <button type="submit">Buy Grandma</button>
+    </form>
+  </div>
+
+ <script>
+    const cookie = document.getElementById('cookie');
+    const cookieCountSpan = document.getElementById('cookie-count');
+    const cursorCostSpan = document.getElementById('cursor-cost');
+    const cursorCountSpan = document.getElementById('cursor-count');
+    const cursorCPSSpan = document.getElementById('cursor-cps');
+    const grandmaCostSpan = document.getElementById('grandma-cost');
+    const grandmaCountSpan = document.getElementById('grandma-count');
+    const grandmaCPSSpan = document.getElementById('grandma-cps');
+
+    function updateDisplay(data) {
+      cookieCountSpan.textContent = data.cookies;
+      cursorCostSpan.textContent = data.cursor_cost;
+      cursorCountSpan.textContent = data.cursors;
+      cursorCPSSpan.textContent = data.cursor_cps;
+      grandmaCostSpan.textContent = data.grandma_cost;
+      grandmaCountSpan.textContent = data.grandmas;
+      grandmaCPSSpan.textContent = data.grandma_cps;
+    }
+
+    function fetchData() {
+      fetch('/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+          updateDisplay(data);
+        })
+        .catch(error => {
+            console.error("Could not fetch game state:", error);
+        });
+    }
+
+    // Initial fetch and update
+    fetchData();
+
+    // Set up auto-update every second
+    setInterval(fetchData, 1000);
+
+    cookie.addEventListener('click', () => {
+      fetch('/click', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          updateDisplay(data);
+        });
+    });
+
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        fetch(form.action, { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+            updateDisplay(data);
+          });
+      });
+    });
+  </script>
+</body>
+</html>
