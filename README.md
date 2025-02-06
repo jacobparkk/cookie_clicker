@@ -6,7 +6,7 @@ A simple browser-based cookie clicker game built with HTML, CSS, and Ruby. Creat
 
 ```
 cookie-clicker/
-├── #README.md#
+├── README.md
 ├── app.rb
 ├── public
 │   ├── PerfectCookie.jpg
