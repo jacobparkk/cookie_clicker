@@ -2,17 +2,17 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'json'
 
-# Game state (in-memory; resets on server restart)
-$cookies = 0.0  # Use a float for fractional cookies
+# Game state
+$cookies = 0.0
 $click_value = 1
 $cursors = 0
 $cursor_cost = 15
-$cursor_cps = 0.1  # Cookies per second
+$cursor_cps = 0.1
 $grandmas = 0
 $grandma_cost = 100
 $grandma_cps = 1
 
-# Automatically generate cookies based on upgrades
+# Auto-generate cookies
 Thread.new do
   loop do
     $cookies += ($cursors * $cursor_cps) + ($grandmas * $grandma_cps)
@@ -20,7 +20,7 @@ Thread.new do
   end
 end
 
-# Helper function to build the JSON response (for AJAX calls)
+# Helper function (no change)
 def game_state
   {
     cookies: $cookies.to_i,
@@ -34,7 +34,13 @@ def game_state
 end
 
 get '/' do
-  erb :index  # Serve the HTML template for the initial load!  THIS WAS THE PROBLEM
+  erb :index  # Serve the initial HTML
+end
+
+# NEW ROUTE:  Get the game state as JSON
+get '/state' do
+  content_type :json
+  game_state.to_json
 end
 
 post '/click' do
