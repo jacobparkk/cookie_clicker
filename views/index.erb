@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cookie Clicker</title>
+  <title>Cookie Clicker by Jacob Park</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -11,15 +11,15 @@
     <img id="cookie" src="/PerfectCookie.jpg" alt="Cookie">
   </div>
 
-  <p>Cookies: <span id="cookie-count"><%= $cookies.to_i %></span></p>  <!-- Initial value -->
+  <p>Cookies: <span id="cookie-count"><%= $cookies.to_i %></span></p>
 
   <h2>Upgrades</h2>
 
   <div class="upgrade">
     <h3>Cursor</h3>
-    <p>Cost: <span id="cursor-cost"><%= $cursor_cost %></span> cookies</p>  <!-- Initial value -->
-    <p>You have: <span id="cursor-count"><%= $cursors %></span></p>  <!-- Initial value -->
-    <p>CPS: <span id="cursor-cps"><%= $cursor_cps %></span></p>      <!-- Initial value -->
+    <p>Cost: <span id="cursor-cost"><%= $cursor_cost %></span> cookies</p>
+    <p>You have: <span id="cursor-count"><%= $cursors %></span></p>
+    <p>CPS: <span id="cursor-cps"><%= $cursor_cps %></span></p>
     <form action="/buy_cursor" method="post">
       <button type="submit">Buy Cursor</button>
     </form>
@@ -27,15 +27,15 @@
 
   <div class="upgrade">
     <h3>Grandma</h3>
-    <p>Cost: <span id="grandma-cost"><%= $grandma_cost %></span> cookies</p>  <!-- Initial value -->
-    <p>You have: <span id="grandma-count"><%= $grandmas %></span></p>  <!-- Initial value -->
-    <p>CPS: <span id="grandma-cps"><%= $grandma_cps %></span></p>      <!-- Initial value -->
+    <p>Cost: <span id="grandma-cost"><%= $grandma_cost %></span> cookies</p>
+    <p>You have: <span id="grandma-count"><%= $grandmas %></span></p>
+    <p>CPS: <span id="grandma-cps"><%= $grandma_cps %></span></p>
     <form action="/buy_grandma" method="post">
       <button type="submit">Buy Grandma</button>
     </form>
   </div>
 
- <script>
+  <script>
     const cookie = document.getElementById('cookie');
     const cookieCountSpan = document.getElementById('cookie-count');
     const cursorCostSpan = document.getElementById('cursor-cost');
@@ -56,7 +56,8 @@
     }
 
     function fetchData() {
-      fetch('/')
+      // Fetch from the /state route, NOT the / route
+      fetch('/state')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -70,6 +71,7 @@
             console.error("Could not fetch game state:", error);
         });
     }
+
 
     // Initial fetch and update
     fetchData();
