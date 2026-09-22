@@ -1,45 +1,14 @@
-# Cookie Clicker Game
+# Crumb & Cosmos
 
-A simple browser-based cookie clicker game built with HTML, CSS, and Ruby. Created by Jacob Park to practice utilizing HTML, CSS, and Ruby.
+A modern incremental bakery game powered by Sinatra and a dependency-free JavaScript front end.
 
-## Project Structure
+## What makes it different
 
-```
-cookie-clicker/
-├── README.md
-├── app.rb
-├── public
-│   ├── PerfectCookie.jpg
-│   └── style.css
-└── views
-    └── index.erb
-```
+- Timing-based click combos
+- Recipe flavors that trade click power against passive production
+- Rotating bakery orders and stardust-funded laboratory upgrades
+- Five production buildings, achievements, offline earnings, and autosave
+- “Reopen bakery” prestige loop with permanent crumb bonuses
+- Responsive cosmic visuals, animated feedback, and optional sound
 
-## Description
-
-This is a simple cookie clicker game where players can:
-- Click cookies to earn points
-- Purchase upgrades to increase cookie production
-
-## Features
-
-- Manual cookie clicking
-- Multiple types of upgrades and achievements
-
-## Installation
-
-1. Clone the repository
-2. Make sure Ruby sinatra is gem installed
-3. Run the command ruby app.rb
-4. Open the link http://localhost:4567/ (default port for sinatra)
-5. Start clicking!
-
-## Technologies Used
-
-- HTML
-- CSS
-- Ruby sinatra
-
-## License
-
-MIT License - feel free to use and modify as you wish!
+Run `ruby app.rb`, then open `http://localhost:4567`. Progress is stored per browser instead of in shared server globals.
