@@ -1,102 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Cookie Clicker by Jacob Park</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <h1>Cookie Clicker by Jacob Park</h1>
-
-  <div id="cookie-container">
-    <img id="cookie" src="/PerfectCookie.jpg" alt="Cookie">
-  </div>
-
-  <p>Cookies: <span id="cookie-count"><%= $cookies.to_i %></span></p>
-
-  <h2>Upgrades</h2>
-
-  <div class="upgrade">
-    <h3>Cursor</h3>
-    <p>Cost: <span id="cursor-cost"><%= $cursor_cost %></span> cookies</p>
-    <p>You have: <span id="cursor-count"><%= $cursors %></span></p>
-    <p>CPS: <span id="cursor-cps"><%= $cursor_cps %></span></p>
-    <form action="/buy_cursor" method="post">
-      <button type="submit">Buy Cursor</button>
-    </form>
-  </div>
-
-  <div class="upgrade">
-    <h3>Grandma</h3>
-    <p>Cost: <span id="grandma-cost"><%= $grandma_cost %></span> cookies</p>
-    <p>You have: <span id="grandma-count"><%= $grandmas %></span></p>
-    <p>CPS: <span id="grandma-cps"><%= $grandma_cps %></span></p>
-    <form action="/buy_grandma" method="post">
-      <button type="submit">Buy Grandma</button>
-    </form>
-  </div>
-
-  <script>
-    const cookie = document.getElementById('cookie');
-    const cookieCountSpan = document.getElementById('cookie-count');
-    const cursorCostSpan = document.getElementById('cursor-cost');
-    const cursorCountSpan = document.getElementById('cursor-count');
-    const cursorCPSSpan = document.getElementById('cursor-cps');
-    const grandmaCostSpan = document.getElementById('grandma-cost');
-    const grandmaCountSpan = document.getElementById('grandma-count');
-    const grandmaCPSSpan = document.getElementById('grandma-cps');
-
-    function updateDisplay(data) {
-      cookieCountSpan.textContent = data.cookies;
-      cursorCostSpan.textContent = data.cursor_cost;
-      cursorCountSpan.textContent = data.cursors;
-      cursorCPSSpan.textContent = data.cursor_cps;
-      grandmaCostSpan.textContent = data.grandma_cost;
-      grandmaCountSpan.textContent = data.grandmas;
-      grandmaCPSSpan.textContent = data.grandma_cps;
-    }
-
-    function fetchData() {
-      // Fetch from the /state route, NOT the / route
-      fetch('/state')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-          updateDisplay(data);
-        })
-        .catch(error => {
-            console.error("Could not fetch game state:", error);
-        });
-    }
-
-
-    // Initial fetch and update
-    fetchData();
-
-    // Set up auto-update every second
-    setInterval(fetchData, 1000);
-
-    cookie.addEventListener('click', () => {
-      fetch('/click', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-          updateDisplay(data);
-        });
-    });
-
-    document.querySelectorAll('form').forEach(form => {
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        fetch(form.action, { method: 'POST' })
-          .then(response => response.json())
-          .then(data => {
-            updateDisplay(data);
-          });
-      });
-    });
-  </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Build a cosmic bakery, discover flavors, and chase the perfect batch."><title>Crumb & Cosmos</title><link rel="stylesheet" href="/style.css"></head>
+<body><main class="app">
+<header><div><p class="eyebrow">AN INTERSTELLAR BAKERY</p><h1>Crumb <i>&</i> Cosmos</h1></div><div class="header-actions"><button id="sound" aria-pressed="true">♪</button><button id="save">Save</button></div></header>
+<section class="dashboard">
+<aside class="panel progression"><div class="currency"><span>Cookies baked</span><strong id="cookies">0</strong><small><b id="cps">0</b> per second</small></div>
+<div class="mission"><span>Current order</span><strong id="missionTitle">Bake 100 cookies</strong><div class="bar"><i id="missionBar"></i></div><small id="missionReward">Reward: 25 stardust</small></div>
+<h2>Bakery stats</h2><dl><div><dt>Stardust</dt><dd id="dust">0</dd></div><div><dt>Crumbs</dt><dd id="crumbs">0</dd></div><div><dt>Best combo</dt><dd id="bestCombo">0</dd></div><div><dt>Total baked</dt><dd id="total">0</dd></div></dl>
+<button id="prestige" class="prestige" disabled>Reopen bakery <small>Reset for permanent crumbs</small></button></aside>
+<section class="oven">
+<div id="sky" class="sky"></div><div class="combo"><span>COMBO</span><strong id="combo">×1.0</strong><div class="bar"><i id="comboBar"></i></div></div>
+<button id="cookie" class="cookie" aria-label="Bake a cookie"><span class="chips">•　•<br>　•　 •<br>•　　•</span></button>
+<p id="flavorName">Classic Orbit</p><div class="click-value">+<b id="clickValue">1</b> per click</div><button id="flavor" class="secondary">Change flavor</button>
+</section>
+<aside class="panel store"><div class="tabs"><button class="active" data-tab="buildings">Bakery</button><button data-tab="upgrades">Lab</button><button data-tab="achievements">Badges</button></div><div id="shop"></div></aside>
+</section>
+<footer><span>Autosaves every 10 seconds · offline earnings included</span><button id="reset">Reset save</button></footer>
+</main><dialog id="flavors"><button class="close">×</button><p class="eyebrow">SIGNATURE FLAVORS</p><h2>Choose today's recipe</h2><div id="flavorGrid"></div></dialog><div id="toast" role="status"></div><script src="/game.js"></script></body></html>
